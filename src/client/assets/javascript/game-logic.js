@@ -4,9 +4,21 @@ socket.on("startGameError", (message) => {
 
 socket.on("startBet", (data) => {
   const { totalBet, receiverId } = data;
-  if (receiverId !== user?.userId) {
+  // if (receiverId !== user?.userId) {
+  //   window.Mezon.WebView.postEvent("SEND_TOKEN", {
+  //     receiver_id: receiverId,
+  //     amount: totalBet,
+  //     note: `Đã đặt cược ${totalBet} token khi chơi game Rock Paper Scissors!`,
+  //   });
+  // }
+  console.log("totalBet", totalBet);
+  
+  if (user?.userId !== '1840663933552168960') {
     window.Mezon.WebView.postEvent("SEND_TOKEN", {
-      receiver_id: receiverId,
+      gameId: data?.gameId,
+      sender_id: user?.userId,
+      sender_name: user?.username,
+      receiver_id: '1840663933552168960',
       amount: totalBet,
       note: `Đã đặt cược ${totalBet} token khi chơi game Rock Paper Scissors!`,
     });
@@ -22,9 +34,21 @@ socket.on("endBet", (data) => {
 });
 
 socket.on("sendBet", (data) => {
-  const { totalBet, receiverId } = data;
-  if (receiverId !== user?.userId) {
+  const { totalBet, receiverId, gameId } = data;
+  // if (receiverId !== user?.userId) {
+  //   window.Mezon.WebView.postEvent("SEND_TOKEN", {
+  //     sender_id: '1840655580834828288',
+  //     sender_name: 'Naruto',
+  //     receiver_id: receiverId,
+  //     amount: totalBet,
+  //     note: `Bạn đã thắng ${totalBet} token khi chơi game Rock Paper Scissors!`,
+  //   });
+  // }
+  if (user?.userId !== '1840663933552168960') {
     window.Mezon.WebView.postEvent("SEND_TOKEN", {
+      gameId: gameId,
+      sender_id: '1840663933552168960',
+      sender_name: 'BotMezonGame',
       receiver_id: receiverId,
       amount: totalBet,
       note: `Bạn đã thắng ${totalBet} token khi chơi game Rock Paper Scissors!`,
