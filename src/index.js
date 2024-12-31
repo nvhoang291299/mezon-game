@@ -364,7 +364,7 @@ const setupSocketServer = (server) => {
 
       joinRoom(data);
       const currentRoom = getCurrentRoom(data.roomId);
-      console.log("currentRoom", currentRoom);
+      // console.log("currentRoom", currentRoom);
       if (currentRoom) {
         currentRoom.roomInfo.owner = currentRoom.roomMember[0];
       }
