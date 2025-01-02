@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 socket.on("startGameError", (message) => {
   alert(message);
 });
