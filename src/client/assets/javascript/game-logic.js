@@ -12,17 +12,22 @@ socket.on("startBet", (data) => {
   //   });
   // }
   console.log("totalBet", totalBet);
-  
-  if (user?.userId !== '1840663933552168960') {
-    window.Mezon.WebView.postEvent("SEND_TOKEN", {
-      gameId: data?.gameId,
-      sender_id: user?.userId,
-      sender_name: user?.username,
-      receiver_id: '1840663933552168960',
-      amount: totalBet,
-      note: `Đã đặt cược ${totalBet} token khi chơi game Rock Paper Scissors!`,
-    });
+  const obj = {
+    apiKey: '93666ec9ceb82272dd968da427faa',
+    appId: '1897617078817241570',
+    sessionId: data?.gameId,
   }
+  // if (user?.userId !== '1840651530236071936') {
+  window.Mezon.WebView.postEvent("SEND_TOKEN", {
+    gameId: data?.gameId,
+    sender_id: user?.userId,
+    sender_name: user?.username,
+    receiver_id: '1840651530236071936',
+    extra_attributes: `${JSON.stringify(obj)}`,
+    amount: totalBet,
+    note: `Đã đặt cược ${totalBet} token khi chơi game Rock Paper Scissors!`,
+  });
+  // }
   user.wallet = user?.wallet - totalBet;
   renderUserInfo(user);
 });
@@ -44,15 +49,29 @@ socket.on("sendBet", (data) => {
   //     note: `Bạn đã thắng ${totalBet} token khi chơi game Rock Paper Scissors!`,
   //   });
   // }
-  if (user?.userId !== '1840663933552168960') {
-    window.Mezon.WebView.postEvent("SEND_TOKEN", {
-      gameId: gameId,
-      sender_id: '1840663933552168960',
-      sender_name: 'BotMezonGame',
-      receiver_id: receiverId,
-      amount: totalBet,
-      note: `Bạn đã thắng ${totalBet} token khi chơi game Rock Paper Scissors!`,
-    });
+  if (receiverId === user?.userId) {
+    const requestConfig = {
+      url: 'http://10.10.20.15:3000/payoutApplication',
+      method: 'POST',
+      headers: {
+        apiKey: '93666ec9ceb82272dd968da427faa',
+        appId: '1897617078817241570',
+        'Content-Type': 'application/json',
+      },
+      data: {
+        sessionId: gameId,
+        userRewardedList: [{ userId: receiverId, username: user?.username, amount: totalBet }],
+      },
+    };
+
+    axios(requestConfig)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
   }
 });
 
