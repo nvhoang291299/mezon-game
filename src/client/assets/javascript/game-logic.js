@@ -11,7 +11,7 @@ socket.on("startBet", (data) => {
   //     note: `Đã đặt cược ${totalBet} token khi chơi game Rock Paper Scissors!`,
   //   });
   // }
-  console.log("totalBet", totalBet);
+
   const obj = {
     apiKey: '93666ec9ceb82272dd968da427faa',
     appId: '1897617078817241570',
@@ -49,7 +49,7 @@ socket.on("sendBet", (data) => {
   //     note: `Bạn đã thắng ${totalBet} token khi chơi game Rock Paper Scissors!`,
   //   });
   // }
-  if (receiverId === user?.userId) {
+  // if (receiverId === user?.userId) {
     const requestConfig = {
       url: 'http://10.10.20.15:3000/payoutApplication',
       method: 'POST',
@@ -63,7 +63,8 @@ socket.on("sendBet", (data) => {
         userRewardedList: [{ userId: receiverId, username: user?.username, amount: totalBet }],
       },
     };
-
+    console.log('requestConfig', requestConfig);
+    
     axios(requestConfig)
       .then((response) => {
         console.log(response.data);
@@ -72,7 +73,7 @@ socket.on("sendBet", (data) => {
         console.error('Error:', error);
       });
 
-  }
+  // }
 });
 
 let stateResult = [];
