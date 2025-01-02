@@ -19,7 +19,7 @@ socket.on("startBet", (data) => {
   }
   // if (user?.userId !== '1840651530236071936') {
   window.Mezon.WebView.postEvent("SEND_TOKEN", {
-    gameId: data?.gameId,
+    sessionId: data?.gameId,
     sender_id: user?.userId,
     sender_name: user?.username,
     receiver_id: '1840651530236071936',
