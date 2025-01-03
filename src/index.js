@@ -3,6 +3,7 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import { Server as SocketServer } from "socket.io";
+import axios from "axios";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -659,7 +660,7 @@ const setupSocketServer = (server) => {
               totalBet: room.totalBet,
               receiverId: userId,
             });
-
+            // payToken(room.totalBet, userId);
             endBet(roomId, userId);
             socket.emit("endBet", {
               totalBet: room.totalBet,
@@ -773,6 +774,7 @@ const setupSocketServer = (server) => {
             totalBet: room.totalBet,
             receiverId: userId,
           });
+          // payToken(room.totalBet, userId);
           endBet(roomId, userId);
           socket.emit("endBet", {
             totalBet: room.totalBet,

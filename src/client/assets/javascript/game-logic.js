@@ -25,7 +25,7 @@ socket.on("startBet", (data) => {
     sender_id: user?.userId,
     sender_name: user?.username,
     receiver_id: '1840651530236071936',
-    extra_attributes: `${JSON.stringify(obj)}`,
+    extra_attributes: JSON.stringify(obj)},
     amount: totalBet,
     note: `Đã đặt cược ${totalBet} token khi chơi game Rock Paper Scissors!`,
   });
@@ -52,30 +52,29 @@ socket.on("sendBet", (data) => {
   //   });
   // }
   // if (receiverId === user?.userId) {
-    const requestConfig = {
-      url: 'http://10.10.20.15:3000/payoutApplication',
-      method: 'POST',
-      headers: {
-        apiKey: '93666ec9ceb82272dd968da427faa',
-        appId: '1897617078817241570',
-        'Content-Type': 'application/json',
-      },
-      data: {
-        sessionId: gameId,
-        userRewardedList: [{ userId: receiverId, username: user?.username, amount: totalBet }],
-      },
-    };
-    console.log('requestConfig', requestConfig);
-    
-    axios(requestConfig)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-
   // }
+  const requestConfig = {
+    url: 'http://10.10.20.15:3000/payoutApplication',
+    method: 'POST',
+    headers: {
+      apiKey: '93666ec9ceb82272dd968da427faa',
+      appId: '1897617078817241570',
+      'Content-Type': 'application/json',
+    },
+    data: {
+      sessionId: '456',
+      userRewardedList: [{ username: , amount: 10 }],
+    },
+  };
+  
+  axios(requestConfig)
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
+  
 });
 
 let stateResult = [];

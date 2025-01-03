@@ -55,6 +55,7 @@ const renderListRoom = (listRooms) => {
               <div class="room-name">
                 <span class="room-name-text">${room?.roomInfo?.roomId}</span>
               </div>
+              <div class="room-players">${room?.roomInfo?.roomMembers?.length}/${room?.roomInfo?.roomMaxUser}</div>
               <div class="room-join">
                 <button onclick="joinRoom('${room?.roomInfo?.roomId}')" class="room-join-btn">JOIN</button>
               </div>
@@ -67,7 +68,7 @@ const renderListRoom = (listRooms) => {
               </div>
               <div class="room-owner">
                 <img class="room-owner-icon" src="./assets/images/user.png" alt="" />
-                <span class="room-owner-name">username</span>
+                <span class="room-owner-name">${room?.roomInfo?.roomName}</span>
               </div>
             </div>
     `;
