@@ -12,7 +12,7 @@ socket.on("startBet", (data) => {
     sender_name: user?.name,
     extra_attribute: JSON.stringify({
       sessionId: currentGameId,
-      appId,
+      appId: '1897617078817241570',
     }),
   };
   window.Mezon.WebView.postEvent("SEND_TOKEN", dataEmit);

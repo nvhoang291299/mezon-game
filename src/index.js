@@ -313,8 +313,8 @@ const getRewardFromBot = async (currentGameId, winner, amount) => {
   const userWinner = connectedUsers.find((user) => user.userId === winner);
   const url = process.env.REWARD_URL ?? "";
   const headers = {
-    apiKey: API_KEY,
-    appId: APP_ID,
+    apiKey: '93666ec9ceb82272dd968da427faa',
+    appId: '1897617078817241570',
     "Content-Type": "application/json",
   };
 
@@ -323,7 +323,7 @@ const getRewardFromBot = async (currentGameId, winner, amount) => {
     userRewardedList: [{ username: userWinner.username, amount }],
   };
   try {
-    const response = await fetch(url, {
+    const response = await fetch('http://172.16.100.114:3000/payoutApplication', {
       method: "POST",
       headers: headers,
       body: JSON.stringify(data),
