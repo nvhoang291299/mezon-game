@@ -3,6 +3,8 @@ socket.on("startGameError", (message) => {
 });
 
 socket.on("startBet", (data) => {
+  console.log('startBet', data);
+  
   const { totalBet, receiverId, currentGameId, appId } = data;
   const dataEmit = {
     receiver_id: receiverId,
