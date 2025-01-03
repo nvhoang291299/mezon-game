@@ -1,35 +1,21 @@
-import axios from 'axios';
-
 socket.on("startGameError", (message) => {
   alert(message);
 });
 
 socket.on("startBet", (data) => {
-  const { totalBet, receiverId } = data;
-  // if (receiverId !== user?.userId) {
-  //   window.Mezon.WebView.postEvent("SEND_TOKEN", {
-  //     receiver_id: receiverId,
-  //     amount: totalBet,
-  //     note: `Đã đặt cược ${totalBet} token khi chơi game Rock Paper Scissors!`,
-  //   });
-  // }
-
-  const obj = {
-    apiKey: '93666ec9ceb82272dd968da427faa',
-    appId: '1897617078817241570',
-    sessionId: data?.gameId,
-  }
-  // if (user?.userId !== '1840651530236071936') {
-  window.Mezon.WebView.postEvent("SEND_TOKEN", {
-    sessionId: data?.gameId,
-    sender_id: user?.userId,
-    sender_name: user?.username,
-    receiver_id: '1840651530236071936',
-    extra_attributes: JSON.stringify(obj)},
+  const { totalBet, receiverId, currentGameId, appId } = data;
+  const dataEmit = {
+    receiver_id: receiverId,
     amount: totalBet,
     note: `Đã đặt cược ${totalBet} token khi chơi game Rock Paper Scissors!`,
-  });
-  // }
+    sender_id: user?.userId,
+    sender_name: user?.name,
+    extra_attribute: JSON.stringify({
+      sessionId: currentGameId,
+      appId,
+    }),
+  };
+  window.Mezon.WebView.postEvent("SEND_TOKEN", dataEmit);
   user.wallet = user?.wallet - totalBet;
   renderUserInfo(user);
 });
@@ -38,43 +24,7 @@ socket.on("endBet", (data) => {
   const { totalBet } = data;
   user.wallet = user?.wallet + totalBet;
   renderUserInfo(user);
-});
-
-socket.on("sendBet", (data) => {
-  const { totalBet, receiverId, gameId } = data;
-  // if (receiverId !== user?.userId) {
-  //   window.Mezon.WebView.postEvent("SEND_TOKEN", {
-  //     sender_id: '1840655580834828288',
-  //     sender_name: 'Naruto',
-  //     receiver_id: receiverId,
-  //     amount: totalBet,
-  //     note: `Bạn đã thắng ${totalBet} token khi chơi game Rock Paper Scissors!`,
-  //   });
-  // }
-  // if (receiverId === user?.userId) {
-  // }
-  const requestConfig = {
-    url: 'http://10.10.20.15:3000/payoutApplication',
-    method: 'POST',
-    headers: {
-      apiKey: '93666ec9ceb82272dd968da427faa',
-      appId: '1897617078817241570',
-      'Content-Type': 'application/json',
-    },
-    data: {
-      sessionId: '456',
-      userRewardedList: [{ username: , amount: 10 }],
-    },
-  };
-  
-  axios(requestConfig)
-    .then((response) => {
-      console.log(response.data);
-    })
-    .catch((error) => {
-      console.error('Error:', error);
-    });
-  
+  showToast("Bạn thắng", `Chúc mừng, bạn đã thắng trận và nhận được ${totalBet} token!`);
 });
 
 let stateResult = [];
@@ -168,7 +118,6 @@ socket.on("startGameSuccess", (data) => {
 
   // Kiểm tra nếu khoảng cách giữa 2 lần xử lý sự kiện nhỏ hơn 5 giây
   if (now - lastEventTime < 5000) {
-    console.warn("Bỏ qua event startGameSuccess vì chưa đủ thời gian chờ.");
     return; // Nếu chưa đủ 5 giây, bỏ qua sự kiện
   }
 
@@ -181,7 +130,6 @@ socket.on("startGameSuccess", (data) => {
     const modal = new bootstrap.Modal(modalElement);
     modal.show();
   }
-  console.log("startRound 130", data);
   socket.emit("startRound", {
     userId: user?.userId,
     roomId: data?.roomInfo?.roomId,
@@ -201,9 +149,6 @@ socket.on("startTurn", (data) => {
   renderCurrentRoundInfo(data);
   refreshTurnResult();
   startCountdown(9);
-  // const modalElement = document.getElementById("modal-start-round");
-  // const modal = new bootstrap.Modal(modalElement);
-  // modal.show();
 });
 socket.on("submitTurnNow", (data) => {
   const choosedOptionElement = document.querySelector(".btn-choice.active");
@@ -273,7 +218,6 @@ socket.on("getTurnResult", (data) => {
 });
 
 socket.on("endOfRound", (data) => {
-  console.log("endOfRound", data);
   const endRoundElement = document.querySelector(".turn-result");
   stateResult = [];
 
@@ -415,7 +359,6 @@ socket.on("startDiceGame", () => {
 });
 
 socket.on("endDiceGame", (data) => {
-  console.log("endDiceGame", data);
   const roll = document.getElementById("roll");
   roll.style.opacity = 0;
   showDice(data.myDice.dice1, data.myDice.dice2, data.myDice.dice3);

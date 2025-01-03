@@ -3,8 +3,9 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 import { Server as SocketServer } from "socket.io";
-import axios from "axios";
+import dotenv from "dotenv";
 
+dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -21,8 +22,8 @@ app.get("/game", function (req, res) {
   res.sendFile(path.join(__dirname, "client", "game.html"));
 });
 
-const server = app.listen(3000, function () {
-  console.log("Example app listening on port 3000 with domain http://localhost:3000");
+const server = app.listen(3100, function () {
+  console.log("Example app listening on port 3100 with domain http://localhost:3100");
 });
 
 const connectedUsers = [];
@@ -57,6 +58,7 @@ const createdRoom = (roomInfo) => {
     roomMember: [], // use to store list id of user in room
     currentRoundMembers: [], // use to store info of user in current round
     currentRound: 1, // use to store current round of room
+    currentGameId: "", // use to store current game id
     isPlaying: false, // use to check room is playing or not
     roundGames: [], // use to store list of round game
     totalBet: 0, // use to store total bet of room
@@ -188,6 +190,7 @@ const startNewGame = (roomId) => {
   room.roundGames = [];
   const listGroup = [];
   room.userWatchers = [];
+  room.currentGameId = makeid(10);
   room.memberStatus = room?.roomMember.map((member) => ({
     userId: member,
     status: "pending",
@@ -304,6 +307,49 @@ function makeid(length) {
   return result;
 }
 
+const getRewardFromBot = async (currentGameId, winner, amount) => {
+  const API_KEY = process.env.API_KEY ?? "";
+  const APP_ID = process.env.APP_ID ?? "";
+  const userWinner = connectedUsers.find((user) => user.userId === winner);
+  const url = process.env.REWARD_URL ?? "";
+  const headers = {
+    apiKey: API_KEY,
+    appId: APP_ID,
+    "Content-Type": "application/json",
+  };
+
+  const data = {
+    sessionId: currentGameId,
+    userRewardedList: [{ username: userWinner.username, amount }],
+  };
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const result = await response.json();
+
+    return {
+      isSuccess: true,
+      message: "Success",
+      data: result,
+    };
+  } catch (error) {
+    console.error("Error:", error);
+    return {
+      isSuccess: false,
+      message: "Error",
+      data: null,
+    };
+  }
+};
+
 const setupSocketServer = (server) => {
   const io = new SocketServer(server, {
     cors: {
@@ -365,7 +411,6 @@ const setupSocketServer = (server) => {
 
       joinRoom(data);
       const currentRoom = getCurrentRoom(data.roomId);
-      // console.log("currentRoom", currentRoom);
       if (currentRoom) {
         currentRoom.roomInfo.owner = currentRoom.roomMember[0];
       }
@@ -412,7 +457,7 @@ const setupSocketServer = (server) => {
       }
       const room = getCurrentRoom(data.roomId);
       let checkBetOfAllMember = [];
-      room.roomMember?.forEach((member) => {
+      room?.roomMember?.forEach((member) => {
         const user = connectedUsers.find((user) => user.userId === member);
         if (user.wallet < +room.roomInfo?.roomBet) {
           checkBetOfAllMember.push(member);
@@ -449,7 +494,9 @@ const setupSocketServer = (server) => {
       io.to(data.roomId).emit("startBet", {
         gameId: data.roomId,
         totalBet: currentRoom.roomInfo?.roomBet,
-        receiverId: currentRoom.roomMember[0],
+        receiverId: process.env.BOT_ID,
+        appId: process.env.APP_ID,
+        currentGameId: currentRoom.currentGameId,
       });
     });
     socket.on("startRound", (data) => {
@@ -498,9 +545,12 @@ const setupSocketServer = (server) => {
               receiverId: userId,
             });
             endBet(roomId, userId);
-            socket.emit("endBet", {
-              totalBet: room.totalBet,
-              roomOwner: currentRoom?.roomMember[0],
+            getRewardFromBot(currentRoom.currentGameId, userId, room.totalBet).then((data) => {
+              if (data.isSuccess) {
+                socket.emit("endBet", {
+                  totalBet: room.totalBet,
+                });
+              }
             });
 
             room.isPlaying = false;
@@ -656,15 +706,13 @@ const setupSocketServer = (server) => {
               isWinner: winCount > loseCount,
               winner: userId,
             });
-            io.to(getSocketIdOfUser(currentRoom?.roomMember[0])).emit("sendBet", {
-              totalBet: room.totalBet,
-              receiverId: userId,
-            });
-            // payToken(room.totalBet, userId);
             endBet(roomId, userId);
-            socket.emit("endBet", {
-              totalBet: room.totalBet,
-              roomOwner: currentRoom?.roomMember[0],
+            getRewardFromBot(currentRoom.currentGameId, userId, room.totalBet).then((data) => {
+              if (data.isSuccess) {
+                socket.emit("endBet", {
+                  totalBet: room.totalBet,
+                });
+              }
             });
             room.isPlaying = false;
             return;
@@ -770,15 +818,13 @@ const setupSocketServer = (server) => {
             currentTurn: currentRound.currentTurn,
             winner: userId,
           });
-          io.to(getSocketIdOfUser(currentRoom?.roomMember[0])).emit("sendBet", {
-            totalBet: room.totalBet,
-            receiverId: userId,
-          });
-          // payToken(room.totalBet, userId);
           endBet(roomId, userId);
-          socket.emit("endBet", {
-            totalBet: room.totalBet,
-            roomOwner: currentRoom?.roomMember[0],
+          getRewardFromBot(currentRoom.currentGameId, userId, room.totalBet).then((data) => {
+            if (data.isSuccess) {
+              socket.emit("endBet", {
+                totalBet: room.totalBet,
+              });
+            }
           });
           room.isPlaying = false;
           return;
