@@ -47,12 +47,10 @@ socket.on("listUsers", (users) => {
 });
 
 const renderUserInfo = (userInfo) => {
-  console.log("renderUserInfo", userInfo);
   const userInfoElement = document.querySelector(".account-box");
   const coinText = document.querySelector(".coin-text");
 
   if (!userInfoElement) {
-    console.error("Element with class 'account-box' not found.");
     return;
   }
 

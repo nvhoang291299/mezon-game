@@ -1,10 +1,8 @@
 socket.on("startGameError", (message) => {
-  alert(message);
+  showToast("Không thành công", message, "error");
 });
 
 socket.on("startBet", (data) => {
-  console.log('startBet', data);
-  
   const { totalBet, receiverId, currentGameId, appId } = data;
   const dataEmit = {
     receiver_id: receiverId,
@@ -14,9 +12,10 @@ socket.on("startBet", (data) => {
     sender_name: user?.name,
     extra_attribute: JSON.stringify({
       sessionId: currentGameId,
-      appId: '1897617078817241570',
+      appId,
     }),
   };
+  console.log(dataEmit);
   window.Mezon.WebView.postEvent("SEND_TOKEN", dataEmit);
   user.wallet = user?.wallet - totalBet;
   renderUserInfo(user);

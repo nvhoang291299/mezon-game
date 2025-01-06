@@ -20,13 +20,25 @@
           <span class="visually-hidden">Loading...</span>
         </div>
       </div>
+      <div class="toast-container position-fixed bottom-0 end-0 p-3" style='z-index: 1000000;'>
+        <div id="myToast" class="toast toast-custom" role="alert" aria-live="assertive" aria-atomic="true">
+          <div class="toast-header toast-header-custom">
+            <!-- <img src="https://via.placeholder.com/20" class="rounded me-2" alt="Icon"> -->
+            <strong class="me-auto" id='toastHeader'>Bootstrap</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div class="toast-body toast-body-custom" id='toastMessage'>
+            Hello, world! This is a toast message.
+          </div>
+        </div>
+      </div>
       <div class="room-section">
         <div class="room-section-header">
           <div class="header-left">
             <span class="header-button create-button" type="button" data-bs-toggle="modal" data-bs-target="#modal-create-room">
               <img class="room-header-icon" src="./assets/images/plus.png" alt="" />
             </span>
-            <span class="header-button search-button" type="button" data-bs-toggle="modal" data-bs-target="#modal-search-room">
+            <span class="header-button search-button" type="button" data-bs-toggle="modal" data-bs-target="#modal-show-game">
               <img class="room-header-icon" src="./assets/images/magnifier.png" alt="" />
             </span>
             <span class="header-button online-button hide" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
@@ -74,6 +86,7 @@
         <div id="modal-search-room-root"></div>
         <div id="modal-start-round-root"></div>
         <div id="modal-show-game-root"></div>
+        <div id='modal-ready-game-root'></div>
       </div>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
