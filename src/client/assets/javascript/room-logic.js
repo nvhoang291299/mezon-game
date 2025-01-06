@@ -111,7 +111,6 @@ const renderListRoom = (listRooms) => {
                   room?.roomInfo?.roomId
                 }')" class="room-join-btn">JOIN</button></div>
               </div>
-              <div class="room-member room-member-info">${room?.roomInfo?.roomMaxUser}</div>
               <div class="room-bet">
                 <img class="room-bet-bg" src="./assets/images/bg-cuoc.png" alt="" />
                 <div class="room-bet-info">
@@ -229,7 +228,7 @@ socket.on("listRooms", (rooms) => {
 
 const renderCurrentRoomInfo = (roomInfo, roomMembers) => {
   const roomMemberElement = document.querySelector(".game-members");
-  const roomMemberInfoElement = document.querySelector(".room-member-info");
+  const roomMemberInfoElement = document.querySelector(".room-info-item .room-member-info");
   roomMemberElement.innerHTML = "";
   const maxMember = roomInfo?.roomInfo?.roomMaxUser;
   const owner = roomInfo?.roomInfo?.owner;
