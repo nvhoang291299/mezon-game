@@ -4,6 +4,7 @@
   min-height: 100vh;
   position: relative;
 }
+
 .loading-box {
   position: fixed;
   top: 0;
@@ -50,8 +51,7 @@
   cursor: pointer;
 }
 
-.user-list .user-item .user-info {
-}
+.user-list .user-item .user-info {}
 
 .user-list .user-item .user-info .user-name {
   font-size: 16px;
@@ -79,11 +79,13 @@
   background: #313338;
   border-radius: 1000px;
 }
+
 .room-section-header .header-left {
   display: flex;
   align-items: center;
   gap: 10px;
 }
+
 .room-section-header .room-header-icon {
   width: 20px;
   height: 20px;
@@ -125,8 +127,7 @@
   padding: 5px 10px;
 }
 
-.room-section-header .coin-box {
-}
+.room-section-header .coin-box {}
 
 .room-section-header .coin-box .coin-icon {
   width: 20px;
@@ -255,7 +256,11 @@
   padding: 5px 10px;
   box-shadow: 0 0 10px rgba(123, 113, 113, 0.5);
   font-size: 13px;
+  width: fit-content;
+  min-width: 100px;
+  margin: auto;
 }
+
 .room-item .room-owner .room-owner-icon {
   width: 20px;
   height: 20px;
@@ -275,6 +280,11 @@
   align-items: stretch;
 }
 
+.room-members {
+  text-align: center;
+  color: white;
+}
+
 .room-item .room-join .room-join-btn {
   width: 100px;
   height: 40px;
@@ -282,13 +292,11 @@
   border: none;
   display: flex;
   background: rgb(34, 1, 6);
-  background: radial-gradient(
-    circle,
-    rgba(34, 1, 6, 0.9136904761904762) 0%,
-    rgba(34, 1, 6, 0.9108893557422969) 31%,
-    rgba(34, 1, 6, 0.8688725490196079) 86%,
-    rgba(34, 1, 6, 0.8072478991596639) 100%
-  );
+  background: radial-gradient(circle,
+      rgba(34, 1, 6, 0.9136904761904762) 0%,
+      rgba(34, 1, 6, 0.9108893557422969) 31%,
+      rgba(34, 1, 6, 0.8688725490196079) 86%,
+      rgba(34, 1, 6, 0.8072478991596639) 100%);
   border-radius: 100px;
   justify-content: center;
   align-items: center;
@@ -394,7 +402,7 @@
   padding-top: 8px;
 }
 
-.game-section .room-info-box .room-info-item + .room-info-item {
+.game-section .room-info-box .room-info-item+.room-info-item {
   border-top: 1px solid #fff;
 }
 
@@ -405,11 +413,16 @@
   border: 2px solid #fff;
   margin-bottom: 5px;
 }
+
 .member-name {
-  overflow: hidden; /* Ẩn phần văn bản tràn */
-  text-overflow: ellipsis; /* Hiển thị dấu "..." khi văn bản bị cắt */
-  white-space: nowrap; /* Ngừng xuống dòng */
-  width: 120px; /* Độ rộng của phần tử */
+  overflow: hidden;
+  /* Ẩn phần văn bản tràn */
+  text-overflow: ellipsis;
+  /* Hiển thị dấu "..." khi văn bản bị cắt */
+  white-space: nowrap;
+  /* Ngừng xuống dòng */
+  width: 120px;
+  /* Độ rộng của phần tử */
   text-align: center;
 }
 
@@ -508,9 +521,11 @@
   position: absolute;
   bottom: 220px;
 }
+
 .my-choice-box {
   left: 80px;
 }
+
 .rival-choice-box {
   right: 80px;
 }
@@ -651,6 +666,7 @@
   position: relative;
   text-align: center;
 }
+
 .dragon {
   background: url("../images/img.png") no-repeat -1538px -514px;
   width: 317px;
@@ -660,6 +676,7 @@
   top: 130px;
   animation: spin 5s linear infinite;
 }
+
 .countdown-time {
   font-size: 100px;
   font-family: "Intro", sans-serif;
@@ -675,6 +692,7 @@
   left: 320px;
   top: 200px;
 }
+
 .choice-text {
   color: #fff;
   position: absolute;
@@ -682,6 +700,7 @@
   font-size: 20px;
   text-transform: uppercase;
 }
+
 .stream-choice-text {
   color: #fff;
   position: absolute;
@@ -694,12 +713,15 @@
   justify-content: center;
   bottom: 145px;
 }
+
 .my-choice-text {
   left: 50px;
 }
+
 .rival-choice-text {
   right: 50px;
 }
+
 .turn-result {
   position: absolute;
   bottom: 35px;
@@ -709,9 +731,11 @@
   color: #fff;
   text-transform: uppercase;
 }
+
 .dice {
   position: absolute;
 }
+
 .dice1 {
   background: url("../images/dice.png") no-repeat -507px -2px;
   width: 98px;
@@ -721,6 +745,7 @@
   top: 200px;
   opacity: 0;
 }
+
 .dice2 {
   background: url("../images/dice.png") no-repeat -404px -3px;
   width: 98px;
@@ -730,6 +755,7 @@
   top: 270px;
   opacity: 0;
 }
+
 .dice3 {
   background: url("../images/dice.png") no-repeat 0 -2px;
   width: 98px;
@@ -751,6 +777,7 @@
   justify-content: center;
   gap: 10px; */
 }
+
 .result-dice-item {
   width: 30px;
   height: 30px;
@@ -758,18 +785,21 @@
   background-size: cover;
   background-position: center;
 }
+
 .result-dice-item-1 {
   position: absolute;
   top: 20px;
   left: 50%;
   transform: translateX(-50%) rotate(45deg);
 }
+
 .result-dice-item-2 {
   position: absolute;
   bottom: 27px;
   right: 19px;
   transform: rotate(-20deg);
 }
+
 .result-dice-item-3 {
   position: absolute;
   bottom: 26px;
@@ -781,6 +811,7 @@
   display: flex;
   gap: 20px;
 }
+
 .modal-show-game .show-game-left-box {
   width: 350px;
   height: calc(100vh - 20px);
@@ -791,10 +822,12 @@
   background: #313338;
   box-shadow: 0 0 10px rgba(51, 50, 50, 0.5);
 }
+
 .show-game-left-box .list-members {
   width: 100%;
   border-radius: 10px;
 }
+
 .hidden-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -824,13 +857,14 @@
   opacity: 0.5;
 }
 
-.show-game-left-box .member-item + .member-item {
+.show-game-left-box .member-item+.member-item {
   border-top: 1px solid #fff;
 }
 
 .show-game-left-box .member-item .member-info {
   flex: 1;
 }
+
 .show-game-left-box .member-avatar {
   width: 70px;
   height: 70px;
@@ -838,6 +872,7 @@
   border: 2px solid #fff;
   padding: 2px;
 }
+
 .show-game-left-box .eye-icon {
   width: 24px;
   border-radius: 50%;
@@ -846,6 +881,7 @@
   right: 0;
   transition: all 0.2s;
 }
+
 .show-game-left-box .eye-icon:active {
   transform: scale(0.9);
 }
@@ -877,6 +913,7 @@
   border-radius: 10px;
   border: 2px solid #fff;
 }
+
 .result-icon {
   width: 20px;
   height: 20px;
@@ -906,14 +943,17 @@
   0% {
     transform: rotate(360deg);
   }
+
   100% {
     transform: rotate(0);
   }
 }
+
 @keyframes zoomout {
   0% {
     transform: scale(1);
   }
+
   100% {
     transform: scale(1.2);
   }
