@@ -387,6 +387,8 @@ const setupSocketServer = (server) => {
     // Tạo phòng mới
     socket.on("createRoom", (roomInfo) => {
       const user = connectedUsers.find((user) => user.userId === roomInfo.owner);
+      console.log(user);
+
       if (user.wallet < roomInfo.roomBet) {
         socket.emit("joinRoomError", "Số dư không đủ để tạo phòng!");
         return;
@@ -470,6 +472,7 @@ const setupSocketServer = (server) => {
         const room = getCurrentRoom(data.roomId);
         const checkIsReady = room?.isReady?.every((member) => member.isReady);
         if (checkIsReady) {
+          clearTimeout();
           socket.emit("startGameNow", data);
         } else {
           room?.isReady?.forEach((user) => {
