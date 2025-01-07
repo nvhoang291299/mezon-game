@@ -15,7 +15,7 @@ socket.on("startBet", (data) => {
       appId,
     }),
   };
-  console.log(dataEmit);
+  // console.log(dataEmit);
   window.Mezon.WebView.postEvent("SEND_TOKEN", dataEmit);
   user.wallet = user?.wallet - totalBet;
   renderUserInfo(user);

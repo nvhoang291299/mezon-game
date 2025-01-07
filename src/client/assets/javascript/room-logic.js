@@ -232,7 +232,7 @@ const renderCurrentRoomInfo = (roomInfo, roomMembers) => {
   roomMemberElement.innerHTML = "";
   const maxMember = roomInfo?.roomInfo?.roomMaxUser;
   const owner = roomInfo?.roomInfo?.owner;
-  if (roomMemberInfoElement) {
+  if (roomMembers?.length && maxMember) {
     roomMemberInfoElement.innerHTML = `${roomMembers?.length}/${maxMember}`;
   }
 

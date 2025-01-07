@@ -468,11 +468,11 @@ const setupSocketServer = (server) => {
       }
       io.to(data.roomId).emit("startCheckReady", data);
 
-      setTimeout(() => {
+      const setReady = setTimeout(() => {
         const room = getCurrentRoom(data.roomId);
         const checkIsReady = room?.isReady?.every((member) => member.isReady);
         if (checkIsReady) {
-          clearTimeout();
+          clearTimeout(setReady);
           socket.emit("startGameNow", data);
         } else {
           room?.isReady?.forEach((user) => {
